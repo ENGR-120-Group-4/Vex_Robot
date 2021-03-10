@@ -1,10 +1,10 @@
 #pragma config(Sensor, inl, irSensor, sensorReflection)
-#pragma config(Sensor, dgt11, yMax, sensorTouch)
-#pragma config(Sensor, dgt12, yMin, sensorTouch)
-#pragma config(Sensor, dgt13, xMin, sensorTouch)
-#pragma config(Sensor, dgt14, xMin, sensorTouch)
-#pragma config(Motor, port2, xMotor, tmotorServoContinousRotation, openLoop)
-#pragma config(Motor, port3, yMotor, tmotorServoContinousRotation, openLoop)
+#pragma config(Sensor, dgt11,   yMax, sensorTouch)
+#pragma config(Sensor, dgt12,   yMin, sensorTouch)
+#pragma config(Sensor, dgt13,   xMin, sensorTouch)
+#pragma config(Sensor, dgt14,   xMin, sensorTouch)
+#pragma config(Motor, port2,  xMotor, tmotorServoContinousRotation, openLoop)
+#pragma config(Motor, port3,  yMotor, tmotorServoContinousRotation, openLoop)
 
 /*
  * If you want to attempt compiling c on your computer, you can install

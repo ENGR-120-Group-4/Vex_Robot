@@ -6,6 +6,12 @@
 #pragma config(Motor, port2, xMotor, tmotorServoContinousRotation, openLoop)
 #pragma config(Motor, port3, yMotor, tmotorServoContinousRotation, openLoop)
 
+/*
+ * If you want to attempt compiling c on your computer, you can install
+ * https://atom.io/packages/gcc-make-run and https://jmeubank.github.io/tdm-gcc/
+ * Compile using f6, this will always give you an error but it might show you
+ * something useful
+ */
 
 // Global Variables to update for the storing of locations of the ir sensor
 long xpos = 0;

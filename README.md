@@ -1,5 +1,5 @@
 # Vex_Robot
-The group 4 ENGR 120 robot code, for scanning and locating dots on a 150mm x 100mm area
+#### The group 4 ENGR 120 robot code, for scanning and locating dots on a 150mm x 100mm area
 ---------------------------------------------------------------------------------------
 ## Summary:
 

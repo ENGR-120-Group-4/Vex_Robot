@@ -14,8 +14,8 @@
  */
 
 // Global Variables to update for the storing of locations of the ir sensor
-long xpos = 0;
-long ypos = 0;
+double xpos = 0;
+double ypos = 0;
 
 // Just moves the robot arm left and right
 // This code should not be used in the future, this is just for demonstration

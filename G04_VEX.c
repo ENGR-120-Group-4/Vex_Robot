@@ -32,7 +32,7 @@ int num_dots = 0;
  * Returns: none
  */
 void add_dots(){
-  if (irSensor!=0){num_dots++;}
+  if (irSensor!=0){num_dots++;//Should add the led here}
 }
 
 

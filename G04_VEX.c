@@ -68,13 +68,9 @@ int xsensor(){
  *
  * Note: This could be made to not need to return a value
  */
-int motor_x(int sensed){
+void motor_x(int sensed){
   if (sensed) {
     motor[xMotor] = motor[xMotor]*-1;
-    return motor[xMotor];
-  }
-  else{
-    return motor[xMotor];
   }
 }
 

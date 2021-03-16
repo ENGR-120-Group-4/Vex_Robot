@@ -32,5 +32,5 @@ rapidly and thoroughly using radiation.
 |Motor Port 2|X-axis motor|
 |Motor Port 3|Y-axis motor|
 
-[Visual_Cases.pdf](https://github.com/ENGR-120-Group-4/Vex_Robot/files/6147267/Visual_Cases.pdf)
+![VisualCases](https://user-images.githubusercontent.com/54737724/111280098-a9145e00-85f8-11eb-84f0-d8604e7a3fef.png)
 

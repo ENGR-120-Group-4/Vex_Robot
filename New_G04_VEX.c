@@ -19,7 +19,6 @@ cont = 1;
 void flipX()
   if ((SensorValue[xmin] || SensorValue[xmax]) == 1){
 	   motor[xMotor] = motor[xMotor]*-1;
-     return motor[xMotor];
 }
 
 int xmax() {

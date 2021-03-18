@@ -16,6 +16,25 @@ cont = 1;
 ////////////////////////////////////////////////////////////////////////////////
 // Put your functions under here
 
+void flipX()
+  if ((SensorValue[xmin] || SensorValue[xmax]) == 1){
+	   return motor[xmotor] *= -1;
+}  
+
+int xmax() {
+	if (SensorValue[xmax] == 0) {
+		return 1
+	 } else {
+		return 2
+}
+
+
+int xmin() {
+	if (SensorValue[xmin] == 0) {
+		return 1
+	else {
+		return 3
+	}
 
 /*
   Function: void yInc()

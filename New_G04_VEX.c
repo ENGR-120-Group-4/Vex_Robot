@@ -27,6 +27,7 @@ int xmax() {
 		return 1;
 	 } else {
 		return 2;
+  }
 }
 
 
@@ -36,6 +37,7 @@ int xmin() {
 	} else {
 		return 3;
 	}
+}
 
 /*
   Function: void yInc()

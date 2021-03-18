@@ -17,7 +17,7 @@ cont = 1;
 // Put your functions under here
 
 void flipX() {
-  if ((SensorValue[xmin] || SensorValue[xmax]) == 1){
+  if (SensorValue[xmin] != 0 || SensorValue[xmax] != 0) {
 	   motor[xMotor] = motor[xMotor]*-1;
    }
  }
@@ -69,7 +69,7 @@ int yMin() {
   	return 7;
 	}
 
-  
+
 /*
   Function: void yInc()
   Increment the Y motor by 1cm, it should make sure that make that yMax is not depressed

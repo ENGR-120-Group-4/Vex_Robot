@@ -19,7 +19,7 @@ cont = 1;
 void flipX()
   if ((SensorValue[xmin] || SensorValue[xmax]) == 1){
 	   return motor[xmotor] *= -1;
-}  
+}
 
 int xmax() {
 	if (SensorValue[xmax] == 0) {
@@ -36,6 +36,35 @@ int xmin() {
 		return 3
 	}
 
+/*
+Function: int yMax()
+Monitors the state of the yMax sensor and returns a value based on that state
+
+Parameters: none
+
+Returns: 1 if sensor is not pressed, 5 if pressed
+*/
+int yMax() {
+  if (SensorValue[ymax] == 0) {
+  	return 1;
+  	} else {
+  	return 5;
+  }
+
+/*
+  Function: int yMin()
+  Monitors the state of the yMax sensor and returns a value based on that state
+
+  Parameters: none
+
+  Returns: 1 if sensor  not pressed, 7 if pressed
+*/
+int yMin() {
+	if (SensorValue[ymin] == 0) {
+  	return 1;
+  else {
+  	return 7;
+	}
 /*
   Function: void yInc()
   Increment the Y motor by 1cm, it should make sure that make that yMax is not depressed

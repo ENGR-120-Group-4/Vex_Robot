@@ -18,22 +18,23 @@ cont = 1;
 
 void flipX()
   if ((SensorValue[xmin] || SensorValue[xmax]) == 1){
-	   return motor[xmotor] *= -1;
-}  
+	   motor[xMotor] = motor[xMotor]*-1;
+     return motor[xMotor];
+}
 
 int xmax() {
 	if (SensorValue[xmax] == 0) {
-		return 1
+		return 1;
 	 } else {
-		return 2
+		return 2;
 }
 
 
 int xmin() {
 	if (SensorValue[xmin] == 0) {
-		return 1
-	else {
-		return 3
+		return 1;
+	} else {
+		return 3;
 	}
 
 /*

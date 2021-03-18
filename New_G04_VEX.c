@@ -16,10 +16,11 @@ cont = 1;
 ////////////////////////////////////////////////////////////////////////////////
 // Put your functions under here
 
-void flipX()
+void flipX() {
   if ((SensorValue[xmin] || SensorValue[xmax]) == 1){
 	   motor[xMotor] = motor[xMotor]*-1;
-}
+   }
+ }
 
 int xmax() {
 	if (SensorValue[xmax] == 0) {

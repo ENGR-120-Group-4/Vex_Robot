@@ -16,6 +16,14 @@ cont = 1;
 ////////////////////////////////////////////////////////////////////////////////
 // Put your functions under here
 
+void zero(){
+while(SensorValue[xmin] == 0){
+motor[xMotor] = -20
+}
+while(SensorValue[ymin] == 0) {
+motor[yMotor] = -20
+}}
+
 void flipX() {
   if (SensorValue[xmin] != 0 || SensorValue[xmax] != 0) {
 	   motor[xMotor] = motor[xMotor]*-1;

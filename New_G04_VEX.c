@@ -17,12 +17,34 @@ cont = 1;
 // Put your functions under here
 
 
+/*
+  Function: void yInc()
+  Increment the Y motor by 1cm, it should make sure that make that yMax is not depressed
 
+  Parameters: None
 
+  Returns: None
+ */
+void yInc(){
+  motor[yMotor] = 20;
+  wait1Msec(1000 * onecm);
+  motor[yMotor] = 0;
+}
 
+/*
+  Function: void pause_yInc()
+  Pauses the x motor then uses yInc() to increment the y then resumes the x motor
 
+  Parameters: None
 
-
+  Returns: None
+ */
+void pause_yInt(){
+  int temp = motor[xMotor];
+  motor[xMotor] = 0
+  yInc();
+  motor[yMotor] = temp;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 task main(){

@@ -129,35 +129,28 @@ task main(){
     switch (xMax()*xMin()*yMax()*yMin()*cont) {
       case 0:
         // End the loop
-      case 1:
-        // Nothing pressed
-        break;
       //xMax depressed
       case 2:
-        //Flip X speed and increment
+        flipX();
+        pause_yInt();
         break;
       //xMin depressed
       case 3:
-        //Flip X speed and increment
+        flipX();
+        pause_yInt();
         break;
       //yMax depressed
-      case 5:
-        break;
-      //yMin depressed
-      case 7:
-        // Nothing just go to xMax
-        break;
       //xMax and yMax depressed
-      case 10:
-        break;
       //xMax and yMin
       case 14:
-        //Same thing as xMax or xMin
+        flipX();
+        pause_yInt();
         break;
       //xMin and yMax depressed and ended
       case 15:
         motor[xMotor] = 0;
         motor[yMotor] = 0;
+        zero();
         /*
          * Next code after completion of scanning
          * More specific code can be added to go to the dots, logic can be added
@@ -165,10 +158,9 @@ task main(){
          */
         break;
       case 21:
-        //Start the code after zeroing
+        motor[xMotor] = 20;
         break;
       default:
-        break;
     }
   }
 }

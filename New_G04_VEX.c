@@ -1,15 +1,15 @@
 #pragma config(Sensor, in1, irSensor, sensorReflection)
-#pragma config(Sensor, dgtl1,   yMin, sensorTouch)
-#pragma config(Sensor, dgtl2,   yMax, sensorTouch)
+#pragma config(Sensor, dgtl1,   yMax, sensorTouch)
+#pragma config(Sensor, dgtl2,   yMin, sensorTouch)
 #pragma config(Sensor, dgtl3,   xMin, sensorTouch)
 #pragma config(Sensor, dgtl4,   xMax, sensorTouch)
 #pragma config(Motor, port2,  xMotor, tmotorServoContinousRotation, openLoop)
 #pragma config(Motor, port3,  yMotor, tmotorServoContinousRotation, openLoop)
 
 //rpm
-#define SPEED 20
+#define SPEED 30
 //
-#define ROTPERCM 3
+#define ROTPERCM 6
 //Time for moving 1cm
 #define ONECM (ROTPERCM * (1 / SPEED) * 6000)
 
@@ -19,16 +19,19 @@ int cont = 1;
 ////////////////////////////////////////////////////////////////////////////////
 // Put your functions under here
 
+int xin;
+int yin;
+
 void zero() {
-  motor[yMotor] = -20;
-  motor[xMotor] = -20;
-  int xin = 0;
-  int yin = 0;
+  motor[yMotor] = -30;
+  motor[xMotor] = -30;
+  xin = 0;
+  yin = 0;
   while(1){
     if(SensorValue[xMin] != 0){motor[xMotor]=0;xin=1;}
     if(SensorValue[yMin] != 0){motor[yMotor]=0;yin=1;}
     if (xin == 1 && yin == 1) {break;}
-    wait1Msec(1000);
+    wait1Msec(10);
   }
 }
 
@@ -97,7 +100,7 @@ int ymin() {
  */
 void yInc(){
   motor[yMotor] = 20;
-  wait1Msec(ONECM);
+  wait1Msec(1000);
   motor[yMotor] = 0;
 }
 
@@ -109,12 +112,15 @@ void yInc(){
 
   Returns: None
  */
+short temp;
 void pause_yInt(){
-  int temp = motor[xMotor];
+  temp = motor[xMotor];
   motor[xMotor] = 0;
   yInc();
-  motor[yMotor] = temp;
+  motor[xMotor] = temp;
 }
+
+int c;
 
 ////////////////////////////////////////////////////////////////////////////////
 task main(){
@@ -126,26 +132,29 @@ task main(){
      * they will just go to the "default" case
      */
     //      2      3      5      7
+     c = xmax()*xmin()*ymax()*ymin();
     switch (xmax()*xmin()*ymax()*ymin()*cont) {
       case 0:
         // End the loop
       	break;
       //xMax depressed
       case 2:
-        flipX();
+        motor[xMotor] = -1 * SPEED;
         pause_yInt();
+        wait1Msec(2000);
         break;
       //xMin depressed
       case 3:
-        flipX();
+        motor[xMotor] = SPEED;
         pause_yInt();
+        wait1Msec(2000);
         break;
       //yMax depressed
       //xMax and yMax depressed
       //xMax and yMin
       case 14:
-        flipX();
-        pause_yInt();
+        motor[xMotor] = -1 * SPEED;
+        wait1Msec(2000);
         break;
       //xMin and yMax depressed and ended
       case 15:
@@ -159,7 +168,7 @@ task main(){
          */
         break;
       case 21:
-        motor[xMotor] = 20;
+        motor[xMotor] = 30;
         break;
       default:
     }

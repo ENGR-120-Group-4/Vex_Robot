@@ -10,28 +10,36 @@
 #define False 0
 #define True 1
 
+//rpm
+#define SPEED 20
+//
+#define ROTPERCM 3
+//Time for moving 1cm
+#define ONECM (ROTPERCM * (1 / SPEED) * 6000)
+
 // To stop the main while loop
-cont = 1;
+int cont = 1;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Put your functions under here
 
 void zero(){
-while(SensorValue[xmin] == 0){
-motor[xMotor] = -20
+  while(SensorValue[xMin] == 0){
+  motor[xMotor] = -20;
+  }
+  while(SensorValue[yMin] == 0) {
+  motor[yMotor] = -20;
+  }
 }
-while(SensorValue[ymin] == 0) {
-motor[yMotor] = -20
-}}
 
 void flipX() {
-  if (SensorValue[xmin] != 0 || SensorValue[xmax] != 0) {
+  if (SensorValue[xMin] != 0 || SensorValue[xMax] != 0) {
 	   motor[xMotor] = motor[xMotor]*-1;
    }
  }
 
-int xmax() {
-	if (SensorValue[xmax] == 0) {
+int xMax() {
+	if (SensorValue[xMax] == 0) {
 		return 1;
 	 } else {
 		return 2;
@@ -39,8 +47,8 @@ int xmax() {
 }
 
 
-int xmin() {
-	if (SensorValue[xmin] == 0) {
+int xMin() {
+	if (SensorValue[xMin] == 0) {
 		return 1;
 	} else {
 		return 3;
@@ -56,12 +64,12 @@ Parameters: none
 Returns: 1 if sensor is not pressed, 5 if pressed
 */
 int yMax() {
-  if (SensorValue[ymax] == 0) {
+  if (SensorValue[yMax] == 0) {
   	return 1;
   	} else {
   	return 5;
   }
-
+}
 /*
   Function: int yMin()
   Monitors the state of the yMax sensor and returns a value based on that state
@@ -71,11 +79,12 @@ int yMax() {
   Returns: 1 if sensor  not pressed, 7 if pressed
 */
 int yMin() {
-	if (SensorValue[ymin] == 0) {
+	if (SensorValue[yMin] == 0) {
   	return 1;
-  else {
+  } else {
   	return 7;
 	}
+}
 
 
 /*
@@ -88,7 +97,7 @@ int yMin() {
  */
 void yInc(){
   motor[yMotor] = 20;
-  wait1Msec(1000 * onecm);
+  wait1Msec(ONECM);
   motor[yMotor] = 0;
 }
 
@@ -102,7 +111,7 @@ void yInc(){
  */
 void pause_yInt(){
   int temp = motor[xMotor];
-  motor[xMotor] = 0
+  motor[xMotor] = 0;
   yInc();
   motor[yMotor] = temp;
 }

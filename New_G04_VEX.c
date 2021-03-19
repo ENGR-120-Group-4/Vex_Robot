@@ -1,14 +1,10 @@
 #pragma config(Sensor, in1, irSensor, sensorReflection)
-#pragma config(Sensor, dgtl1,   xMax, sensorTouch)
-#pragma config(Sensor, dgtl2,   xMin, sensorTouch)
-#pragma config(Sensor, dgtl3,   yMin, sensorTouch)
-#pragma config(Sensor, dgtl4,   yMin, sensorTouch)
-#pragma config(Motor, port2,  yMotor, tmotorServoContinousRotation, openLoop)
-#pragma config(Motor, port3,  xMotor, tmotorServoContinousRotation, openLoop)
-
-// For if you like the
-#define False 0
-#define True 1
+#pragma config(Sensor, dgtl1,   yMin, sensorTouch)
+#pragma config(Sensor, dgtl2,   yMax, sensorTouch)
+#pragma config(Sensor, dgtl3,   xMin, sensorTouch)
+#pragma config(Sensor, dgtl4,   xMax, sensorTouch)
+#pragma config(Motor, port2,  xMotor, tmotorServoContinousRotation, openLoop)
+#pragma config(Motor, port3,  yMotor, tmotorServoContinousRotation, openLoop)
 
 //rpm
 #define SPEED 20
@@ -23,12 +19,16 @@ int cont = 1;
 ////////////////////////////////////////////////////////////////////////////////
 // Put your functions under here
 
-void zero(){
-  while(SensorValue[xMin] == 0){
-  motor[xMotor] = -20;
-  }
-  while(SensorValue[yMin] == 0) {
+void zero() {
   motor[yMotor] = -20;
+  motor[xMotor] = -20;
+  int xin = 0;
+  int yin = 0;
+  while(1){
+    if(SensorValue[xMin] != 0){motor[xMotor]=0;xin=1;}
+    if(SensorValue[yMin] != 0){motor[yMotor]=0;yin=1;}
+    if (xin == 1 && yin == 1) {break;}
+    wait1Msec(1000);
   }
 }
 
@@ -38,7 +38,7 @@ void flipX() {
    }
  }
 
-int xMax() {
+int xmax() {
 	if (SensorValue[xMax] == 0) {
 		return 1;
 	 } else {
@@ -47,7 +47,7 @@ int xMax() {
 }
 
 
-int xMin() {
+int xmin() {
 	if (SensorValue[xMin] == 0) {
 		return 1;
 	} else {
@@ -63,7 +63,7 @@ Parameters: none
 
 Returns: 1 if sensor is not pressed, 5 if pressed
 */
-int yMax() {
+int ymax() {
   if (SensorValue[yMax] == 0) {
   	return 1;
   	} else {
@@ -78,7 +78,7 @@ int yMax() {
 
   Returns: 1 if sensor  not pressed, 7 if pressed
 */
-int yMin() {
+int ymin() {
 	if (SensorValue[yMin] == 0) {
   	return 1;
   } else {
@@ -118,7 +118,7 @@ void pause_yInt(){
 
 ////////////////////////////////////////////////////////////////////////////////
 task main(){
-  // Zero the robot
+  zero();
   while(1){
     // check if a dot is present (we can also track coordinates of the dots too)
     /*
@@ -126,9 +126,10 @@ task main(){
      * they will just go to the "default" case
      */
     //      2      3      5      7
-    switch (xMax()*xMin()*yMax()*yMin()*cont) {
+    switch (xmax()*xmin()*ymax()*ymin()*cont) {
       case 0:
         // End the loop
+      	break;
       //xMax depressed
       case 2:
         flipX();

@@ -223,6 +223,7 @@ task main(){
          * in order to get directly to them in a secondary function
          */
         break;
+      //Start xMin and yMin
       case 21:
         motor[xMotor] = SPEED;
         break;

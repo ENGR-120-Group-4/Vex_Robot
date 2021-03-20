@@ -226,7 +226,6 @@ task main(){
       case 21:
         motor[xMotor] = SPEED;
         break;
-      default:
     }
   }
 }

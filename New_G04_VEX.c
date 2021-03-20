@@ -3,17 +3,22 @@
 #pragma config(Sensor, dgtl2,   yMin, sensorTouch)
 #pragma config(Sensor, dgtl3,   xMin, sensorTouch)
 #pragma config(Sensor, dgtl4,   xMax, sensorTouch)
+#pragma config(Sensor, dgtl11,   LED, sensorLEDtoVCC)
 #pragma config(Motor, port2,  xMotor, tmotorServoContinousRotation, openLoop)
 #pragma config(Motor, port3,  yMotor, tmotorServoContinousRotation, openLoop)
 
-//rpm
+//The power level of the motors
 #define SPEED 30
-//
-#define ROTPERCM 6
+//How many rotations to move one cm
+#define ROTPERCM 3
 //Time for moving 1cm
 #define ONECM (ROTPERCM * (1 / SPEED) * 6000)
+//Standard waitime
+#define STANARDWAIT 2000
+//Threshold for activating the black square
+#define THRESHOLD 0.5
 
-// To stop the main while loop
+// To stop the main switch case for further development
 int cont = 1;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -23,8 +28,8 @@ int xin;
 int yin;
 
 void zero() {
-  motor[yMotor] = -30;
-  motor[xMotor] = -30;
+  motor[yMotor] = -1 * SPEED;
+  motor[xMotor] = -1 * SPEED;
   xin = 0;
   yin = 0;
   while(1){
@@ -35,12 +40,14 @@ void zero() {
   }
 }
 
-void flipX() {
-  if (SensorValue[xMin] != 0 || SensorValue[xMax] != 0) {
-	   motor[xMotor] = motor[xMotor]*-1;
-   }
- }
+/*
+Function: int xmax()
+Monitors the state of the xmax sensor and returns a value based on that state
 
+Parameters: none
+
+Returns: 1 if sensor is not pressed, 2 if pressed
+*/
 int xmax() {
 	if (SensorValue[xMax] == 0) {
 		return 1;
@@ -49,7 +56,14 @@ int xmax() {
   }
 }
 
+/*
+Function: int xmin()
+Monitors the state of the xmin sensor and returns a value based on that state
 
+Parameters: none
+
+Returns: 1 if sensor is not pressed, 3 if pressed
+*/
 int xmin() {
 	if (SensorValue[xMin] == 0) {
 		return 1;
@@ -59,7 +73,7 @@ int xmin() {
 }
 
 /*
-Function: int yMax()
+Function: int ymax()
 Monitors the state of the yMax sensor and returns a value based on that state
 
 Parameters: none
@@ -74,7 +88,7 @@ int ymax() {
   }
 }
 /*
-  Function: int yMin()
+  Function: int ymin()
   Monitors the state of the yMax sensor and returns a value based on that state
 
   Parameters: none
@@ -99,10 +113,11 @@ int ymin() {
   Returns: None
  */
 void yInc(){
-  motor[yMotor] = 20;
+  motor[yMotor] = SPEED;
   wait1Msec(1000);
   motor[yMotor] = 0;
 }
+
 
 /*
   Function: void pause_yInc()
@@ -112,15 +127,47 @@ void yInc(){
 
   Returns: None
  */
-short temp;
 void pause_yInt(){
-  temp = motor[xMotor];
+  short temp = motor[xMotor];
   motor[xMotor] = 0;
   yInc();
   motor[xMotor] = temp;
 }
 
-int c;
+
+/*
+  Function: void moveX(int dir)
+  Moves the x motor left or right depending on dir
+
+  Parameters:
+  int dir -- Moves x to xMin if -1 and toward xMax if 1
+
+  Returns: None
+ */
+void moveX(int dir) {
+  motor[xMotor] = dir * SPEED;
+  pause_yInt();
+  wait1Msec(STANARDWAIT)
+}
+
+
+/*
+  Function: void indicate()
+  If the ir sensor is reading a value higher than the THRESHOLD light the LED
+
+  Parameters: None
+
+  Returns: None
+ */
+void indicate(){
+  if SensorValue[ir] < THRESHOLD{
+    SensorValue[LED] = 1;
+  }
+  else{
+    SensorValue[LED] = 0;
+  }
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 task main(){
@@ -131,30 +178,24 @@ task main(){
      * Later cases without velocity changes can be removed without having issues
      * they will just go to the "default" case
      */
+    indicate();
     //      2      3      5      7
-     c = xmax()*xmin()*ymax()*ymin();
     switch (xmax()*xmin()*ymax()*ymin()*cont) {
       case 0:
-        // End the loop
+        // End the loop for further development
       	break;
       //xMax depressed
       case 2:
-        motor[xMotor] = -1 * SPEED;
-        pause_yInt();
-        wait1Msec(2000);
+        moveX(-1);
         break;
       //xMin depressed
       case 3:
-        motor[xMotor] = SPEED;
-        pause_yInt();
-        wait1Msec(2000);
+        moveX(1);
         break;
-      //yMax depressed
-      //xMax and yMax depressed
       //xMax and yMin
       case 14:
         motor[xMotor] = -1 * SPEED;
-        wait1Msec(2000);
+        wait1Msec(STANARDWAIT);
         break;
       //xMin and yMax depressed and ended
       case 15:
@@ -168,7 +209,7 @@ task main(){
          */
         break;
       case 21:
-        motor[xMotor] = 30;
+        motor[xMotor] = SPEED;
         break;
       default:
     }

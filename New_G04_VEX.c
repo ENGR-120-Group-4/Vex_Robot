@@ -4,18 +4,18 @@
 #pragma config(Sensor, dgtl3,   xMin, sensorTouch)
 #pragma config(Sensor, dgtl4,   xMax, sensorTouch)
 #pragma config(Sensor, dgtl11,   LED, sensorLEDtoVCC)
-#pragma config(Motor, port2,  xMotor, tmotorServoContinousRotation, openLoop)
-#pragma config(Motor, port3,  yMotor, tmotorServoContinousRotation, openLoop)
+#pragma config(Motor, port2,  xMotor, tmotorNormal, openLoop)
+#pragma config(Motor, port3,  yMotor, tmotorNormal, openLoop)
 
 //The power level of the motors
 #define SPEED 30
 //How many rotations to move one cm
 #define ROTPERCM 3
 //Time for moving 1cm
-#define ONECM (ROTPERCM * (1 / SPEED) * 6000)
+#define ONECM ((float)ROTPERCM * (1 / (float)SPEED) * 60000)
 //Standard waitime
 #define STANARDWAIT 2000
-//Threshold for activating the black square
+//Threshold for activating the on the black square
 #define THRESHOLD 0.5
 
 // To stop the main switch case for further development
@@ -24,14 +24,20 @@ int cont = 1;
 ////////////////////////////////////////////////////////////////////////////////
 // Put your functions under here
 
-int xin;
-int yin;
 
+/*
+  Function: void zero()
+  Sends the motors to xMin and yMin to begin scanning
+
+  Parameters: none
+
+  Returns: none
+*/
 void zero() {
   motor[yMotor] = -1 * SPEED;
   motor[xMotor] = -1 * SPEED;
-  xin = 0;
-  yin = 0;
+  int xin = 0;
+  int yin = 0;
   while(1){
     if(SensorValue[xMin] != 0){motor[xMotor]=0;xin=1;}
     if(SensorValue[yMin] != 0){motor[yMotor]=0;yin=1;}
@@ -40,13 +46,14 @@ void zero() {
   }
 }
 
+
 /*
-Function: int xmax()
-Monitors the state of the xmax sensor and returns a value based on that state
+  Function: int xmax()
+  Monitors the state of the xmax sensor and returns a value based on that state
 
-Parameters: none
+  Parameters: none
 
-Returns: 1 if sensor is not pressed, 2 if pressed
+  Returns: 1 if sensor is not pressed, 2 if pressed
 */
 int xmax() {
 	if (SensorValue[xMax] == 0) {
@@ -56,13 +63,14 @@ int xmax() {
   }
 }
 
+
 /*
-Function: int xmin()
-Monitors the state of the xmin sensor and returns a value based on that state
+  Function: int xmin()
+  Monitors the state of the xmin sensor and returns a value based on that state
 
-Parameters: none
+  Parameters: none
 
-Returns: 1 if sensor is not pressed, 3 if pressed
+  Returns: 1 if sensor is not pressed, 3 if pressed
 */
 int xmin() {
 	if (SensorValue[xMin] == 0) {
@@ -72,13 +80,14 @@ int xmin() {
 	}
 }
 
+
 /*
-Function: int ymax()
-Monitors the state of the yMax sensor and returns a value based on that state
+  Function: int ymax()
+  Monitors the state of the yMax sensor and returns a value based on that state
 
-Parameters: none
+  Parameters: none
 
-Returns: 1 if sensor is not pressed, 5 if pressed
+  Returns: 1 if sensor is not pressed, 5 if pressed
 */
 int ymax() {
   if (SensorValue[yMax] == 0) {
@@ -87,6 +96,8 @@ int ymax() {
   	return 5;
   }
 }
+
+
 /*
   Function: int ymin()
   Monitors the state of the yMax sensor and returns a value based on that state
@@ -113,8 +124,10 @@ int ymin() {
   Returns: None
  */
 void yInc(){
+  resetMotorEncoder(yMotor);
   motor[yMotor] = SPEED;
-  wait1Msec(1000);
+  clearTimer(T2);
+  while((time1[T2]< ONECM) && SensorValue[yMax] == 0){}
   motor[yMotor] = 0;
 }
 
@@ -147,7 +160,7 @@ void pause_yInt(){
 void moveX(int dir) {
   motor[xMotor] = dir * SPEED;
   pause_yInt();
-  wait1Msec(STANARDWAIT)
+  wait1Msec(STANARDWAIT);
 }
 
 
@@ -160,7 +173,7 @@ void moveX(int dir) {
   Returns: None
  */
 void indicate(){
-  if SensorValue[ir] < THRESHOLD{
+  if (SensorValue[irSensor] < THRESHOLD){
     SensorValue[LED] = 1;
   }
   else{
@@ -192,12 +205,14 @@ task main(){
       case 3:
         moveX(1);
         break;
+      case 10:
+      	moveX(-1);
+  			break;
       //xMax and yMin
       case 14:
-        motor[xMotor] = -1 * SPEED;
-        wait1Msec(STANARDWAIT);
+        moveX(-1);
         break;
-      //xMin and yMax depressed and ended
+      //xMin and yMax depressed
       case 15:
         motor[xMotor] = 0;
         motor[yMotor] = 0;

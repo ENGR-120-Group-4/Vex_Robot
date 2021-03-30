@@ -19,6 +19,7 @@
 //Threshold for activating the on the black square
 #define THRESHOLD 2500
 
+int count = 0;
 ////////////////////////////////////////////////////////////////////////////////
 // Put your functions under here
 
@@ -172,27 +173,29 @@ void moveX(int dir) {
 
   Returns: None
  */
-void indicate(){
-  if (SensorValue[irSensor] > THRESHOLD){
-    SensorValue[LED] = 1;
+int indicate(int irVal,int toggle){
+  if (toggle==0 && irVal){
+    SensorValue[LED] = ++count;
+    return 1;
   }
-  else{
-    SensorValue[LED] = 0;
+  else if(toggle==1 && !irVal){
+    return 0;
   }
 }
 
-int irVal = SensorValue[irSensor];
+
 ////////////////////////////////////////////////////////////////////////////////
 task main(){
   zero();
+  int toggle = 0;
   while(1){
     // check if a dot is present (we can also track coordinates of the dots too)
     /*
      * Later cases without velocity changes can be removed without having issues
      * they will just go to the "default" case
      */
-    indicate();
-    irVal = SensorValue[irSensor];
+    irVal = ((SensorValue[irSensor] > THRESHOLD) ? 1 : 0);
+    toggle = indicate(irVal,toggle);
     //      2      3      5      7
     switch (xmax()*xmin()*ymax()*ymin()*cont) {
       //xMax depressed

@@ -210,10 +210,27 @@ int time;
 
   Returns: None
  */
-void indicate(){}
+ int numtobin(int num){
+   int bin = 0;
+   int temp, i=1,next=1;
+   while(num!=0){
+     temp = num%2;
+     num/=2;
+     next++;
+     bin += temp * i;
+     i *= 10;
+   }
+   return bin;
+ }
 
-
-
+ void turnonlights(int n){
+   int i = 1,number = numtobin(n),n;
+   for(int i = 1; i < 5;i++){
+     n = number % 10;
+     LEDS(i,n);
+     number = number / 10;
+   }
+ }
 
 int timersas;
 int irVals;
@@ -232,8 +249,10 @@ task main(){
     timersas = time1[T3];
     irVals = SensorValue[irSensor];
     irVal = ((SensorValue[irSensor] > THRESHOLD) ? 1 : 0);
+    SensorValue[DefaultLED] = ((SensorValue[irSensor] > THRESHOLD) ? 1 : 0);
     if (time1[T3]>=time && irVal){
     	SensorValue[LED1] = ++count;
+      turnonlights(count);
     	time = time1[T3] + ONECM;
 		}
     //      2      3      5      7

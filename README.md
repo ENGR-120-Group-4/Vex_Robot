@@ -32,5 +32,6 @@ rapidly and thoroughly using radiation.
 |Motor Port 2|X-axis motor|
 |Motor Port 3|Y-axis motor|
 
-![VisualCases](https://user-images.githubusercontent.com/54737724/111280098-a9145e00-85f8-11eb-84f0-d8604e7a3fef.png)
+![Bot Logic (1)](https://user-images.githubusercontent.com/54737724/113948299-6261f000-97c1-11eb-92cf-08c761112efe.png)
+
 
